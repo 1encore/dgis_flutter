@@ -234,31 +234,33 @@ internal class NativeView(
             routes.first().route.geometry.entries.forEach {
                 list.add(it.value)
             }
-		//DRAW CUSTOM ROUTE
-        drawPolyline(list)
-
-        /*
-        routeEditor.setRouteParams(
-            RouteEditorRouteParams(
-                startPoint = startPoint,
-                finishPoint = finishPoint,
-                routeSearchOptions = RouteSearchOptions(
-                    CarRouteSearchOptions(
-
-                    )
-                )
-            )
-        )
-        gisView.getMapAsync { map ->
-            for (s in map.sources) {
-                if (s is RouteEditorSource) {
-                    map.removeSource(s)
-                }
-            }
-            map.addSource(routeEditorSource)
+            //DRAW CUSTOM ROUTE
+            drawPolyline(list)
             result.success("OK")
+
+
+//        routeEditor.setRouteParams(
+//            RouteEditorRouteParams(
+//                startPoint = startPoint,
+//                finishPoint = finishPoint,
+//                routeSearchOptions = RouteSearchOptions(
+//                    CarRouteSearchOptions(
+//
+//                    )
+//                )
+//            )
+//        )
+//        gisView.getMapAsync { map ->
+//            for (s in map.sources) {
+//                if (s is RouteEditorSource) {
+//                    map.removeSource(s)
+//                }
+//            }
+//            map.addSource(routeEditorSource)
+//            result.success("OK")
+//        }
+
         }
-        */
     }
 
     private fun drawPolyline(points: List<GeoPoint>) {
