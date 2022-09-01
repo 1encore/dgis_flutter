@@ -218,60 +218,27 @@ internal class NativeView(
                 longitude = arguments["finishLongitude"] as Double
             )
         )
-        
-        val trafficRouter = TrafficRouter(sdkContext)
-        val routesFuture = trafficRouter.findRoute(
-            startPoint,
-            finishPoint,
-            routeSearchOptions = RouteSearchOptions(car = CarRouteSearchOptions())
-        )
 
-        val routeMapObjectSource = RouteMapObjectSource(sdkContext, RouteVisualizationType.NORMAL)
-        map.addSource(routeMapObjectSource)
+        routeEditor.setRouteParams(
+            RouteEditorRouteParams(
+                startPoint = startPoint,
+                finishPoint = finishPoint,
+                routeSearchOptions = RouteSearchOptions(
+                    CarRouteSearchOptions(
 
-        routesFuture.onResult { routes: List<TrafficRoute> ->
-            val list = arrayListOf<GeoPoint>()
-            routes.first().route.geometry.entries.forEach {
-                list.add(it.value)
-            }
-            //DRAW CUSTOM ROUTE
-            drawPolyline(list)
-            result.success("OK")
-
-
-//        routeEditor.setRouteParams(
-//            RouteEditorRouteParams(
-//                startPoint = startPoint,
-//                finishPoint = finishPoint,
-//                routeSearchOptions = RouteSearchOptions(
-//                    CarRouteSearchOptions(
-//
-//                    )
-//                )
-//            )
-//        )
-//        gisView.getMapAsync { map ->
-//            for (s in map.sources) {
-//                if (s is RouteEditorSource) {
-//                    map.removeSource(s)
-//                }
-//            }
-//            map.addSource(routeEditorSource)
-//            result.success("OK")
-//        }
-
-        }
-    }
-
-    private fun drawPolyline(points: List<GeoPoint>) {
-        val polyline = Polyline(
-            PolylineOptions(
-                points = points,
-                width = 5.lpx,
-                color = Color(4283123350.toInt())
+                    )
+                )
             )
         )
-        mapObjectManager.addObject(polyline)
+        gisView.getMapAsync { map ->
+            for (s in map.sources) {
+                if (s is RouteEditorSource) {
+                    map.removeSource(s)
+                }
+            }
+            map.addSource(routeEditorSource)
+            result.success("OK")
+        }
     }
 
     private fun removeRoute(result: MethodChannel.Result) {
