@@ -218,6 +218,26 @@ internal class NativeView(
                 longitude = arguments["finishLongitude"] as Double
             )
         )
+        
+        val trafficRouter = TrafficRouter(sdkContext)
+        val routesFuture = trafficRouter.findRoute(
+            startPoint,
+            finishPoint,
+            routeSearchOptions = RouteSearchOptions(car = CarRouteSearchOptions())
+        )
+
+        val routeMapObjectSource = RouteMapObjectSource(sdkContext, RouteVisualizationType.NORMAL)
+        map.addSource(routeMapObjectSource)
+
+        routesFuture.onResult { routes: List<TrafficRoute> ->
+            val list = arrayListOf<GeoPoint>()
+            routes.first().route.geometry.entries.forEach {
+                list.add(it.value)
+            }
+		//DRAW CUSTOM ROUTE
+        drawPolyline(list)
+
+        /*
         routeEditor.setRouteParams(
             RouteEditorRouteParams(
                 startPoint = startPoint,
@@ -238,6 +258,18 @@ internal class NativeView(
             map.addSource(routeEditorSource)
             result.success("OK")
         }
+        */
+    }
+
+    private fun drawPolyline(points: List<GeoPoint>) {
+        val polyline = Polyline(
+            PolylineOptions(
+                points = points,
+                width = 5.lpx,
+                color = Color(4283123350.toInt())
+            )
+        )
+        mapObjectManager.addObject(polyline)
     }
 
     private fun removeRoute(result: MethodChannel.Result) {
