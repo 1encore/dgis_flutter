@@ -143,10 +143,10 @@ class ButtonMapWidget extends StatelessWidget {
                   child: const Icon(Icons.add),
                   onPressed: () async {
                     final status = await controller.setRoute(RoutePosition(
-                        finishLatitude: 55.752425,
-                        finishLongitude: 37.613983,
-                        startLatitude: 55.759909,
-                        startLongitude: 37.618806));
+                        finishLatitude: 43.2359262,
+                        finishLongitude: 76.9016613,
+                        startLatitude: 43.2069675,
+                        startLongitude: 76.8311085));
                     log(status);
                   },
                 ),
