@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 
-
 class GisMap extends StatefulWidget {
   final String directoryKey;
   final String mapKey;
@@ -64,6 +63,15 @@ class _GisMapState extends State<GisMap> {
       'tilt': widget.startCameraPosition.tilt,
       'bearing': widget.startCameraPosition.bearing,
     };
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      return UiKitView(
+        viewType: viewType,
+        layoutDirection: TextDirection.ltr,
+        creationParams: creationParams,
+        creationParamsCodec: const StandardMessageCodec(),
+      );
+    }
+
     if (!widget.useHybridComposition!) {
       return AndroidView(
         viewType: viewType,
@@ -82,7 +90,8 @@ class _GisMapState extends State<GisMap> {
           );
         },
         onCreatePlatformView: (params) {
-          final AndroidViewController controller = PlatformViewsService.initExpensiveAndroidView(
+          final AndroidViewController controller =
+              PlatformViewsService.initExpensiveAndroidView(
             id: params.id,
             viewType: viewType,
             layoutDirection: TextDirection.ltr,
@@ -92,8 +101,8 @@ class _GisMapState extends State<GisMap> {
               params.onFocusChanged(true);
             },
           )
-            ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
-            ..create();
+                ..addOnPlatformViewCreatedListener(params.onPlatformViewCreated)
+                ..create();
           return controller;
         },
       );
